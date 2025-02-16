@@ -15,7 +15,7 @@ app.put('/items/:id', updateItem);
 app.delete('/items/:id', deleteItem);
 
 // ✅ Fix: Use environment variable for port to ensure Cloud Run compatibility
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 8080; 
 
 db.init()
   .then(() => {
