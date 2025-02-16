@@ -1,6 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA', '.']
+    dir: "."
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA']
