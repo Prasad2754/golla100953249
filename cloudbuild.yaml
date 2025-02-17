@@ -1,13 +1,10 @@
 steps:
-  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA', '.']
 
-  # Step 2: Push the Docker image to the Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA']
 
-  # Step 3: Deploy the image to Cloud Run using the google/cloud-sdk container
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - 'gcloud'
@@ -20,4 +17,8 @@ steps:
       - 'managed'
       - '--region'
       - 'us-central1'  # Your desired region
-      - '--allow-unauthenticated'  # Optional: allow unauthenticated
+      - '--allow-unauthenticated'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  logs_bucket: gs://YOUR_BUCKET_NAME  # Use your bucket or REGIONAL_USER_OWNED_BUCKET
