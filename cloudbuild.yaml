@@ -1,13 +1,29 @@
+substitutions:
+  _COMMIT_SHA: 'latest'
+
 steps:
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA', '.']
-    dir: "."
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA', '.']
 
+  # Step 2: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA']
 
-images:
-  - 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA'
+  # Step 3: Deploy the image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'myapp' # Change to your Cloud Run service name
+      - '--image'
+      - 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
 
 options:
   logging: CLOUD_LOGGING_ONLY
+

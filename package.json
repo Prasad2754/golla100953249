@@ -4,12 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+<<<<<<< HEAD
   "start": "node src/index.js",
   "prettify": "prettier -l --write \"**/*.js\"",
   "test": "jest",
   "dev": "nodemon --inspect=0.0.0.0:9229 -L src/index.js"
 }
 ,
+=======
+    "prettify": "prettier -l --write \"**/*.js\"",
+    "test": "jest",
+    "dev": "nodemon --inspect=0.0.0.0:9229 -L src/index.js",
+    "start": "node src/index.js"
+  },
+>>>>>>> 66640f306452ce3eb418c43b7200be9d23061ebf
   "dependencies": {
     "express": "^4.18.2",
     "pg": "^8.11.2",
