@@ -1,24 +1,29 @@
+substitutions:
+  _COMMIT_SHA: 'latest'
+
 steps:
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA', '.']
 
+  # Step 2: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA']
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # Step 3: Deploy the image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
     args:
-      - 'gcloud'
       - 'run'
       - 'deploy'
-      - 'myapp'  # Name of your Cloud Run service
+      - 'myapp' # Change to your Cloud Run service name
       - '--image'
-      - 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/winter-wonder-451104-q4/golla100953249/app:$_COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
       - '--platform'
       - 'managed'
-      - '--region'
-      - 'us-central1'  # Your desired region
       - '--allow-unauthenticated'
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  logs_bucket: gs://YOUR_BUCKET_NAME  # Use your bucket or REGIONAL_USER_OWNED_BUCKET
+
